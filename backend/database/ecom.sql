@@ -84,3 +84,25 @@ VALUES ('Thinking, Fast and Slow','The author in this book explains two ways of 
 ('FREAKONOMICS','In the summer of 2003, the New York Times Magazine sent Stephen J. Dubner, an author and journalist, to write a profile of Steven D. Levitt, a heralded young economist at the University of Chicago. Levitt was not remotely interested in the things that interest most economists. Instead, he studied the riddles of everyday life from cheating to crime to child - rearing and his conclusions turned the conventional wisdom on its head. For instance, he argued that one of the maincauses of the crime drop of the 1990s was the legalization of abortion twenty years earlier. The Times article yielded an unprecedented response, a deluge of interest from thousands of curious, inspired, occasionally distraught readers. Levitt and Dubner collaborated on a book that gives full play to Levitts most compelling ideas.',218,'26.jpg','Business & Economics',336,'Steven D. Levitt& Stephen J. Dubner');
 
 
+-- stored procedure 
+
+CREATE PROCEDURE `addToCart`(
+IN _customer_id INT,
+IN _product_id INT,
+IN _quantity INT
+)
+BEGIN
+INSERT INTO shopping_cart(customer_id, product_id, quantity)
+VALUES (_customer_id,_product_id,_quantity);
+END
+
+CREATE PROCEDURE `addToOrders`(
+IN _created_on DATETIME,
+IN _customer_id INT,
+IN _product_id INT,
+IN _quantity INT)
+BEGIN
+INSERT INTO orders(created_on,customer_id, product_id, quantity)
+VALUES (_created_on,_customer_id,_product_id,_quantity);
+END
+

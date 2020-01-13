@@ -23,14 +23,14 @@ export default class Navbar extends Component {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item ">
-              <a class="nav-link" href="#">
-                Shopping Cart
-              </a>
+              <Link to="/cart/" className="nav-link">
+              Shopping Cart
+              </Link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
-                Orders
-              </a>
+            <Link to="/orders/" className="nav-link">
+              Orders
+              </Link>
             </li>
             <li class="nav-item">
               <Link to="/profile" className="nav-link">

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Item = props => (
@@ -19,12 +18,7 @@ const Item = props => (
       <h5 className="card-title">Price : {props.item.price}</h5>
       <h5 className="card-title">Authour : {props.item.authour}</h5>
     </div>
-    <a href="#" className="btn btn-primary">
-      Add to Cart
-    </a>
-    <a href="#" className="btn btn-primary">
-      Buy Now
-    </a>
+    <div className="btn btn-primary" onClick={() => {props.addToCart(1,props.item.product_id,1)}}>Add to Cart</div>      
   </div>
 );
 
@@ -53,15 +47,27 @@ export default class Home extends Component {
       .get(`http://localhost:5000/${order}`)
       .then(response => {
         this.setState({ products: response.data });
-        console.log(response);
+        
       })
       .catch(error => {
         console.log(error);
       });
   }
 
+  addToCart(customerID,productID,quantity) {
+    const item={"customer_id":customerID,"product_id":productID,"quantity":quantity}
+    axios
+      .post(`http://localhost:5000/cart/add`,item)
+      .then(response => {
+        
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+
   render() {
-    console.log(this.props);
     return (
       <div className="container">
         <div className="row">
@@ -91,6 +97,7 @@ export default class Home extends Component {
               <Item
                 item={currentItem}
                 push={this.props.history.push}
+                addToCart={this.addToCart}
                 key={currentItem.product_id}
               />
             );

@@ -20,8 +20,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/details/:id" component={Details} />
-          <Route path="/cart/:id" component={ShoppingCart} />
-          <Route path="/orders/:id" component={Orders} />
+          <Route path="/cart/" component={ShoppingCart} />
+          <Route path="/orders/" component={Orders} />
           <Route path="/profile" component={Profile} />
         </Switch>
         <Footer />
