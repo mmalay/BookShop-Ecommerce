@@ -14,9 +14,9 @@ app.use(cors());
 app.use('/images', express.static('images'));
 
 app.use(authRoute);
-app.use('/',rootRoute);
-app.use('/cart',cartRoute);
-app.use('/orders',ordersRoute);
+app.use('/', rootRoute);
+app.use('/cart', cartRoute);
+app.use('/orders', ordersRoute);
 
 mysqlConnection.connect(err => {
   if (!err) console.log('DB connection succeded.');

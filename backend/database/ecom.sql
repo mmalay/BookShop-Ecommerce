@@ -2,14 +2,15 @@
 CREATE TABLE `customer` (
   `customer_id`        INT           NOT NULL AUTO_INCREMENT,
   `name`               VARCHAR(50)   NOT NULL,
-  `email`              VARCHAR(100)  NOT NULL,
+  `email`              VARCHAR(100)  NOT NULL UNIQUE,
   `password`           VARCHAR(50)   NOT NULL,
-   `address_1`          VARCHAR(100),
-  `address_2`          VARCHAR(100),
+  `phone`              VARCHAR(15),
+  `locality`           VARCHAR(100),
+  `address`            VARCHAR(100),
   `city`               VARCHAR(100),
-  `region`             VARCHAR(100),
-  `postal_code`        VARCHAR(100),
-  `mob_phone`          varchar(100),
+  `state`              VARCHAR(100),
+  `pin`                VARCHAR(10),
+  
   PRIMARY KEY  (`customer_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0;
 

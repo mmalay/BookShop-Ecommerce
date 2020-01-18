@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import _ from 'lodash';
 
 const Item = props => (
-  <div className="card" style={{ width: '18rem' }}>
+  <div
+    className="card"
+    style={{ width: '20rem', display: 'table', margin: '5px auto' }}
+  >
     <div
       className="card-body"
       onClick={() => {
@@ -19,11 +23,8 @@ const Item = props => (
       <h5 className="card-title">Quantity : {props.item.quantity}</h5>
       <h5 className="card-title">Created On : {props.item.created_on}</h5>
     </div>
-          
   </div>
 );
-
-
 
 export default class Orders extends Component {
   constructor(props) {
@@ -44,18 +45,27 @@ export default class Orders extends Component {
       });
   }
 
-
   render() {
-    return ( <div className="container">
-      {this.state.orders.map(currentItem => {
-        return (
-          <Item
-            item={currentItem}
-            push={this.props.history.push}
-            key={currentItem.product_id}
-          />
-        );
-      })}
-    </div>);
+    return (
+      <div className="container">
+        {_.chunk(this.state.orders, 3).map((currentItem, rowIndex) => {
+          return (
+            <div key={rowIndex} className="row">
+              {currentItem.map((col, colIndex) => {
+                console.log(col);
+                return (
+                  <Item
+                    item={col}
+                    push={this.props.history.push}
+                    addToCart={this.addToCart}
+                    key={col.product_id}
+                  />
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+    );
   }
 }

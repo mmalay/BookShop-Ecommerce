@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import axios from 'axios';
 
 const Item = props => (
-  <div className="card" style={{ width: '18rem' }}>
+  <div
+    className="container"
+    style={{ width: '20rem', display: 'table', margin: '5px auto' }}
+  >
     <div
       className="card-body"
       onClick={() => {
@@ -19,13 +22,32 @@ const Item = props => (
       <h5 className="card-title">Price : {props.item.price}</h5>
       <h5 className="card-title">Quantity : {props.item.quantity}</h5>
     </div>
-    <div className="btn btn-primary" onClick={() => {props.changeQuantity(props.item.item_id,props.item.quantity+1)}}>+</div>
-    <div className="btn btn-primary" onClick={() => {props.changeQuantity(props.item.item_id,props.item.quantity-1)}}>-</div>
-    <div className="btn btn-primary" onClick={() => {props.removeItem(props.item.item_id)}}>Remove</div>
-          
+    <div
+      className="btn btn-primary"
+      onClick={() => {
+        props.changeQuantity(props.item.item_id, props.item.quantity + 1);
+      }}
+    >
+      +
+    </div>
+    <div
+      className="btn btn-primary"
+      onClick={() => {
+        props.changeQuantity(props.item.item_id, props.item.quantity - 1);
+      }}
+    >
+      -
+    </div>
+    <div
+      className="btn btn-primary"
+      onClick={() => {
+        props.removeItem(props.item.item_id);
+      }}
+    >
+      Remove
+    </div>
   </div>
 );
-
 
 export default class ShoppingCart extends Component {
   constructor(props) {
@@ -33,7 +55,6 @@ export default class ShoppingCart extends Component {
 
     this.state = { products: [], total: 0 };
   }
-
 
   componentDidMount() {
     axios
@@ -45,19 +66,23 @@ export default class ShoppingCart extends Component {
       .catch(error => {
         console.log(error);
       });
-    
   }
 
-  getTotal=()=>{
-    let amount=0;
-    this.state.products.map(currentItem => amount = amount + currentItem.price*currentItem.quantity);
+  getTotal = () => {
+    let amount = 0;
+    this.state.products.map(
+      currentItem =>
+        (amount = amount + currentItem.price * currentItem.quantity)
+    );
     // call back is added to see the effect of setState immediately
-    this.setState({ total: amount },()=>{console.log(this.state.total);});
-  }
+    this.setState({ total: amount }, () => {
+      console.log(this.state.total);
+    });
+  };
 
-  changeQuantity=(id,num)=>{
+  changeQuantity = (id, num) => {
     axios
-      .put(`http://localhost:5000/cart/edit/${id}`,{value:num})
+      .put(`http://localhost:5000/cart/edit/${id}`, { value: num })
       .then(response => {
         //this.setState({ products: response.data });
         //this.forceUpdate();
@@ -66,9 +91,9 @@ export default class ShoppingCart extends Component {
       .catch(error => {
         console.log(error);
       });
-  }
+  };
 
-  removeItem=id=>{
+  removeItem = id => {
     axios
       .delete(`http://localhost:5000/cart/delete/${id}`)
       .then(response => {
@@ -79,37 +104,45 @@ export default class ShoppingCart extends Component {
         console.log(error);
       });
 
-      this.setState({
-        products: this.state.products.filter(el => el.item_id !== id)
-      });
-      this.getTotal();
-  }
-   
+    this.setState({
+      products: this.state.products.filter(el => el.item_id !== id)
+    });
+    this.getTotal();
+  };
+
   render() {
-    return ( <div className="container">
-      <div className="row">
-          <h4>Total Amount:{this.state.total}</h4>          
+    return (
+      <div className="container">
+        <div className="row">
+          <h4>Total Amount:{this.state.total}</h4>
           <div
             className="btn btn-primary"
             onClick={() => {
-              
+              this.props.history.push(`/address`);
             }}
           >
             Place Order
           </div>
+        </div>
+        {_.chunk(this.state.products, 3).map((currentItem, rowIndex) => {
+          return (
+            <div key={rowIndex} className="row">
+              {currentItem.map((col, colIndex) => {
+                console.log(col);
+                return (
+                  <Item
+                    item={col}
+                    push={this.props.history.push}
+                    removeItem={this.removeItem}
+                    changeQuantity={this.changeQuantity}
+                    key={col.product_id}
+                  />
+                );
+              })}
+            </div>
+          );
+        })}
       </div>
-      {  
-      this.state.products.map(currentItem => {
-        return (
-          <Item
-            item={currentItem}
-            push={this.props.history.push}
-            changeQuantity={this.changeQuantity}
-            removeItem={this.removeItem}
-            key={currentItem.product_id}
-          />
-        );     
-       })}
-    </div>);
+    );
   }
 }

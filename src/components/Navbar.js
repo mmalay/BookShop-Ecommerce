@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { signOut } from '../actions';
+import GoogleAuth from './GoogleAuth';
 
-export default class Navbar extends Component {
+class Navbar extends Component {
   render() {
     return (
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -24,18 +28,21 @@ export default class Navbar extends Component {
           <ul class="navbar-nav mr-auto">
             <li class="nav-item ">
               <Link to="/cart/" className="nav-link">
-              Shopping Cart
+                Shopping Cart
               </Link>
             </li>
             <li class="nav-item">
-            <Link to="/orders/" className="nav-link">
-              Orders
+              <Link to="/orders/" className="nav-link">
+                Orders
               </Link>
             </li>
             <li class="nav-item">
               <Link to="/profile" className="nav-link">
                 Profile
               </Link>
+            </li>
+            <li class="nav-item">
+              <GoogleAuth push={this.props.history.push} />
             </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
@@ -54,3 +61,15 @@ export default class Navbar extends Component {
     );
   }
 }
+
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     signOut: () => dispatch(signOut())
+//   }
+// }
+
+const mapStateToProps = state => {
+  return { isSignedIn: state.auth.isSignedIn };
+};
+
+export default compose(withRouter, connect(mapStateToProps))(Navbar);

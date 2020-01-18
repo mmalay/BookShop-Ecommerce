@@ -1,8 +1,6 @@
 import React from 'react';
-import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-//import { createBrowserHistory } from 'history';
-// import createBrowserHistory from 'history';
+
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Details from './components/Details';
@@ -10,6 +8,7 @@ import Orders from './components/Orders';
 import ShoppingCart from './components/ShoppingCart';
 import Footer from './components/Footer';
 import Profile from './components/Profile';
+import AddressForm from './components/AddressForm';
 
 function App() {
   return (
@@ -23,6 +22,7 @@ function App() {
           <Route path="/cart/" component={ShoppingCart} />
           <Route path="/orders/" component={Orders} />
           <Route path="/profile" component={Profile} />
+          <Route path="/address" component={AddressForm} />
         </Switch>
         <Footer />
       </div>
